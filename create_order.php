@@ -1,0 +1,39 @@
+<?php
+$appId = "1057626425ccc1a4156daf5f05d6267501";
+$secretKey = "cfsk_ma_prod_09dc87b5df57fbaad6d69ecb558e0de3_d0e78508";
+
+$url = "https://api.cashfree.com/pg/orders"; // Use sandbox URL for testing: https://sandbox.cashfree.com/pg/orders
+
+$data = [
+    "order_id" => "order_" . time(),
+    "order_amount" => 100.00,
+    "order_currency" => "INR",
+    "customer_details" => [
+        "customer_id" => "cust123",
+        "customer_email" => "test@example.com",
+        "customer_phone" => "9876543210"
+    ],
+    "order_meta" => [
+        "return_url" => "https://yourwebsite.com/status?order_id={order_id}",
+        "payment_methods" => "upi"
+    ]
+];
+
+$headers = [
+    "Content-Type: application/json",
+    "x-client-id: $appId",
+    "x-client-secret: $secretKey"
+];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+
+echo $response;
+?>
