@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UPI Intent Payment</title>
+  <script src="https://sdk.cashfree.com/js/ui/2.0.0/cashfree.js"></script>
+</head>
+<body>
+  <h2>Pay ₹100 via UPI</h2>
+  <button id="payBtn">Pay Now</button>
+
+  <script>
+    document.getElementById("payBtn").addEventListener("click", async function() {
+      // Call backend to get payment_session_id
+      const response = await fetch("create_order.php");
+      const data = await response.json();
+      
+      let cashfree = new Cashfree({ mode: "production" }); // use "sandbox" for testing
+      cashfree.paySeamless({
+        paymentSessionId: data.payment_session_id,
+        redirectTarget: "_self"
+      });
+    });
+  </script>
+</body>
+</html>
